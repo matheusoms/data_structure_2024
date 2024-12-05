@@ -1,0 +1,27 @@
+name: C/C++ CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment:
+        description: 'Deseja realizar a execução do workflow?'
+        required: true
+        type: choice
+        options:
+          - sim
+          - não
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: configure
+      run: ./configure
+    - name: make
+      run: make
+    - name: make check
+      run: make check
+    - name: make distcheck
+      run: make distcheck
