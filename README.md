@@ -17,9 +17,9 @@ O projeto tem como objetivo criar um gerenciador de cartelas de bingo que intera
     Coluna N: contém números de 31 a 45 (com o quadrado central como "FREE").
     Coluna G: contém números de 46 a 60.
     Coluna O: contém números de 61 a 75.
-
-    Obs: cada número nas colunas é selecionado de forma aleatória dentro de seu intervalo pré-definido, garantindo que não haja repetição.
     ```
+    _Obs: cada número nas colunas é selecionado de forma aleatória dentro de seu intervalo pré-definido, garantindo que não haja repetição._
+
 - Marcando as cartelas e completando 5 quadrados da coluna o programa aparece a mensagem "COLUNA" e caso complete a linha "LINHA".
 - Completando a cartela o programa aparece a mensagem **"BINGO"**, e faltando apenas 1 número aparece a mensagem **"Olha a boa!"**.
 - O programa irá informar quais números foram chamados.
@@ -27,7 +27,7 @@ O projeto tem como objetivo criar um gerenciador de cartelas de bingo que intera
 
 ## Como rodar o projeto na sua máquina:
 
-Para preparar o ambiente basta ter as depêndencias necessárias instaladas para compilar e rodar programas em C++, você pode utilizar o compliador da microsoft ![VIsual Studio](https://visualstudio.microsoft.com/pt-br/vs/features/cplusplus/), o compilador ![Dev C++](https://www.bloodshed.net/) ou utilizando o ![Visual Studio Code](https://code.visualstudio.com/) e instalando os pacotes e compiladores nativos disponíveis.
+Para preparar o ambiente basta ter as depêndencias necessárias instaladas para compilar e rodar programas em C++, você pode utilizar o compliador da microsoft [VIsual Studio](https://visualstudio.microsoft.com/pt-br/vs/features/cplusplus/), o compilador [Dev C++](https://www.bloodshed.net/) ou utilizando o [Visual Studio Code](https://code.visualstudio.com/) e instalando os pacotes e compiladores nativos disponíveis.
 
 _Obs: Se estiver no Visual Studio (code ou o desktop) procure um ícone de botão play e clique para rodar o programa._
 
@@ -49,3 +49,59 @@ g++ -g *.cpp -o programa
 ```
 ./programa
 ```
+
+### Instalando e configurando o Valgrind
+
+Para realizar os testes de vazamento de memória (leaks memory) você pode utilizar o valgrind se estiver em uma distro linux ou em um WSL.
+
+**Comandos de instalação:**
+
+```
+wget https://sourceware.org/pub/valgrind/valgrind-3.24.0.tar.bz2
+tar xvf valgrind-3.24.0.tar.bz2
+cd valgrind-3.24.0.tar.bz2
+./configure
+make
+sudo make install
+```
+Após isso o ambiente estará configurado, basta compilar o arquivo desejado e rodar o comando. No meu caso utilizarei para o arquivo BingoManager.cpp:
+
+```
+g++ -g main.cpp BingoManager.cpp -o programa
+```
+A tag '-g' é essencial para que o valgrind identifique o arquivo a ser testado.
+
+Após compilar rode:
+
+```
+valgrind --leak-check=full ./programa
+```
+
+No meu caso, fiz algumas interações no programa e este foi o retorno:
+```
+==75564== HEAP SUMMARY:
+==75564==     in use at exit: 0 bytes in 0 blocks
+==75564==   total heap usage: 46 allocs, 46 frees, 91,089 bytes allocated
+==75564== 
+==75564== All heap blocks were freed -- no leaks are possible
+==75564== 
+==75564== For lists of detected and suppressed errors, rerun with: -s
+==75564== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+- **HEAP SUMMARY:**
+
+```
+in use at exit: 0 bytes in 0 blocks
+total heap usage: 46 allocs, 46 frees, 91,089 bytes allocated
+```
+
+**"in use at exit: 0 bytes in 0 blocks":** Isso significa que no momento da execução final, não há memória alocada, ou seja, a memória foi completamente liberada.
+**"total heap usage: 46 allocs, 46 frees, 91,089 bytes allocated":** O programa fez 46 alocações e 46 liberações de memória no total, alocando 91,089 bytes no processo. O número de alocações e liberações sendo iguais indica que toda a memória alocada foi corretamente liberada.
+
+**All heap blocks were freed -- no leaks are possible**: Isso confirma que não houve leaks. Todos os blocos de memória que foram alocados durante a execução do programa foram devidamente liberados.
+
+- **ERROR SUMMARY:**
+```
+ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+Isso significa que não houve erros de memória detectados durante a execução do programa (como acessos inválidos à memória, vazamentos, etc.).
