@@ -36,16 +36,16 @@ _Obs: Se estiver no Visual Studio (code ou o desktop) procure um ícone de botã
 **1º Instalar o compilador:**
 
 ```
-    sudo apt install build-essential
+sudo apt install build-essential
 ```
 
 **2º Na pasta onde se encontra o programa executar o seguinte comando:**
 
 ```    
-    g++ -g *.cpp -o programa
+g++ -g *.cpp -o programa
 ```
 **3º Rodar o programa, execute o seguinte comando:**
 
 ```
-    ./programa
+./programa
 ```
