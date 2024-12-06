@@ -4,8 +4,7 @@
 #include <set>
 #include <iomanip>
 #include <random>
-#include <filesystem>
-#include <algorithm>
+#include <filesystem> // Para manipular arquivos e pastas
 
 namespace fs = std::filesystem;
 
@@ -68,10 +67,16 @@ void BingoCard::marcarNumero(int numero) {
 }
 
 bool BingoCard::temLinhaCompleta() const {
-    for (const auto &linha : cartela) {
-        if (std::all_of(linha.begin(), linha.end(), [](const std::string &celula) { return celula == "X"; })) {
-            return true;
+    for (int linha = 0; linha < 5; ++linha) {
+        bool completa = true;
+        for (int coluna = 0; coluna < 5; ++coluna) {
+            if (linha == 2 && coluna == 2) continue; // Ignorar o FREE
+            if (cartela[linha][coluna] != "X") {
+                completa = false;
+                break;
+            }
         }
+        if (completa) return true;
     }
     return false;
 }
@@ -118,13 +123,11 @@ bool BingoCard::estaQuaseCompleta() const {
 }
 
 void BingoCard::salvarEmArquivo(const std::string &nomeArquivo) const {
-    // Criar a pasta ./cartelas, se não existir
     const std::string pasta = "./cartelas";
     if (!fs::exists(pasta)) {
         fs::create_directory(pasta);
     }
 
-    // Caminho completo do arquivo
     std::string caminhoCompleto = pasta + "/" + nomeArquivo;
 
     std::ofstream arquivo(caminhoCompleto);
@@ -133,7 +136,6 @@ void BingoCard::salvarEmArquivo(const std::string &nomeArquivo) const {
         return;
     }
 
-    // Escrever a cartela no arquivo
     arquivo << " B    I    N    G    O\n";
     for (const auto &linha : cartela) {
         for (const auto &celula : linha) {
