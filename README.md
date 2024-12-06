@@ -105,3 +105,5 @@ total heap usage: 46 allocs, 46 frees, 91,089 bytes allocated
 ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 Isso significa que não houve erros de memória detectados durante a execução do programa (como acessos inválidos à memória, vazamentos, etc.).
+#
+Para mais informações sobre o uso do Valgrind, deixo aqui o repositório do rmshimomura que ajudou na execução do teste: https://github.com/rmshimomura/Preparatorio-ED
