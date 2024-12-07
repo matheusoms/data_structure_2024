@@ -67,7 +67,7 @@ sudo make install
 Após isso o ambiente estará configurado, basta compilar o arquivo desejado e rodar o comando. No meu caso utilizarei para o arquivo BingoManager.cpp:
 
 ```
-g++ -g main.cpp BingoManager.cpp -o programa
+g++ -g main.cpp BingoManager.cpp BingoCard.cpp -o programa
 ```
 A tag '-g' é essencial para que o valgrind identifique o arquivo a ser testado.
 
