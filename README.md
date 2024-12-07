@@ -42,7 +42,7 @@ sudo apt install build-essential
 **2º Na pasta onde se encontra o programa executar o seguinte comando:**
 
 ```    
-g++ -g *.cpp -o programa
+g++ -g main.cpp BingoManager.cpp BingoCard.cpp -o programa
 ```
 **3º Rodar o programa, execute o seguinte comando:**
 
